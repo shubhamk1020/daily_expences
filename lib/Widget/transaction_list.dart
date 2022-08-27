@@ -13,22 +13,26 @@ class TransactionList extends StatelessWidget {
     return Container(
       height: 450,
       child: transactions.isEmpty
-          ? Column(
-              children: [
-                Text(
-                  'No transaction added yet!',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                    height: 300,
-                    child: Image.asset(
-                      'assets/image/waiting.png',
-                      fit: BoxFit.cover,
-                    )),
-              ],
+          ? LayoutBuilder(
+              builder: ((context, constraints) {
+                return Column(
+                  children: [
+                    Text(
+                      'No transaction added yet!',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                        height: constraints.maxHeight * 0.6,
+                        child: Image.asset(
+                          'assets/image/waiting.png',
+                          fit: BoxFit.cover,
+                        )),
+                  ],
+                );
+              }),
             )
           : ListView.builder(
               itemBuilder: (context, index) {
@@ -58,8 +62,10 @@ class TransactionList extends StatelessWidget {
                       DateFormat.yMMMd().format(transactions[index].date),
                     ),
                     trailing: IconButton(
-                      
-                      icon: Icon(Icons.delete,color: Colors.red[400],),
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red[400],
+                      ),
                       color: Theme.of(context).errorColor,
                       onPressed: () => deleteTx(transactions[index].id),
                     ),
